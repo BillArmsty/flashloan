@@ -1,56 +1,42 @@
 // SPDX-License Identifier: MIT
-pragma solidity ^0.6.6;
+pragma solidity 0.8.10;
 
-import "./interfaces/ILendingPool.sol";
-import "./aaave/FlashLoanReceiverBase.sol";
-import "./interfaces/ILendingPoolAddressesProvider.sol";
+import {IERC20} from "@aave/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20.sol";
+import {IPoolAddressesProvider} from "@aave/core-v3/contracts/interfaces/IPoolAddressesProvider.sol";
+import {FlashLoanSimpleReceiverBase} from "@aave/core-v3/contracts/flashloan/base/FlashLoanSimpleReceiverBase.sol";
 
-contract Flashloan is FlashLoanReceiverBase {
-    constructor(
-        address _addressProvider
-    ) public FlashLoanReceiverBase(_addressProvider) {}
+contract Flashloan is FlashLoanSimpleReceiverBase {
+    //Implement withdraw function for the contract by owner
+    address payable owner;
 
-    function startFlashloan(uint256 amount) public {
-        address receiverAddress = address(this);
+    //Define constructor
+    constructor(address _addressProvider) 
+        FlashLoanSimpleReceiverBase(IPoolAddressesProvider(_addressProvider)) 
+        {
+            owner = payable(msg.sender);
+        }
 
-        address[] memory assets = new address[](1);
-        assets[0] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE; // ETH
 
-        uint256[] memory amounts = new uint256[](1);
-        amounts[0] = amount;
-
-        uint256[] memory modes = new uint256[](1);
-        modes[0] = 0; // no debt
-
-        address onBehalfOf = address(this);
-        bytes memory params = "";
-
-        uint16 referralCode = 0;
-
-        ILendingPool lendingPool = ILendingPool(
-            addressesProvider.getLendingPool()
-        );
-        lendingPool.flashLoan(
-            receiverAddress,
-            assets,
-            amounts,
-            modes,
-            onBehalfOf,
-            params,
-            referralCode
-        );
-    }
+    //Implement executeOperation function
 
     function executeOperation(
-        address[] calldata assets,
-        uint256[] calldata amounts,
-        uint256[] calldata premiums,
+        address asset,
+        uint256 amount,
+        uint256 premium,
         address initiator,
         bytes calldata params
     ) external override returns (bool) {
-        // do whatever you want with the funds
-        // NOTE: If you want to use the received ETH you MUST use the `initiator` address
-        // Avoid reentrancy
-        return true;
+
+    //Mock Arbitrage Logic
+
+    uint256 amountToRepay = amount + premium;
+    IERC20(asset).approve(address(POOL), amountToRepay);
+
+    return true;
+    }
+
+    //Implement flashloan function
+    function requestFlashLoan() public {
+        
     }
 }
