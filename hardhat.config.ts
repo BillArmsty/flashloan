@@ -13,8 +13,6 @@ const config: HardhatUserConfig = {
     sepolia: {
       url: INFURA_SEPOLIA_ENDPOINT,
       accounts: [`0x${PRIVATE_KEY}`],
-      gasPrice: 1000000000,
-      gas: 10000000,
     },
   }
 };

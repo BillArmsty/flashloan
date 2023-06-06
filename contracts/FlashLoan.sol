@@ -1,9 +1,9 @@
 // SPDX-License Identifier: MIT
 pragma solidity 0.8.10;
 
-import {IERC20} from "@aave/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20.sol";
-import {IPoolAddressesProvider} from "@aave/core-v3/contracts/interfaces/IPoolAddressesProvider.sol";
-import {FlashLoanSimpleReceiverBase} from "@aave/core-v3/contracts/flashloan/base/FlashLoanSimpleReceiverBase.sol";
+import {IERC20} from "../node_modules/@aave/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20.sol";
+import {IPoolAddressesProvider} from "../node_modules/@aave/core-v3/contracts/interfaces/IPoolAddressesProvider.sol";
+import {FlashLoanSimpleReceiverBase} from "../node_modules/@aave/core-v3/contracts/flashloan/base/FlashLoanSimpleReceiverBase.sol";
 
 contract FlashLoan is FlashLoanSimpleReceiverBase {
     //Implement withdraw function for the contract by owner
