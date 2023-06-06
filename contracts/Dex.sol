@@ -59,7 +59,7 @@ contract DEX {
     //Implement sell function for the given token
     function sellDAI() external {
         uint256 usdcToReceive = ((DAI_BALANCES[msg.sender] / dexBRate) * 100) *
-            (10 ** 12);
+            (10 ** 12);//Conversion from 18 decimals to 6 decimals
         usdc.transfer(msg.sender, usdcToReceive);
     }
 
